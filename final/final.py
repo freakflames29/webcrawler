@@ -20,7 +20,7 @@ def callurls(urlname):
     urls = []
     for link in soup.find_all('a'):
         urls.append(link.get('href'))
-    print(len(urls))
+    # print(len(urls))
     for i in urls:
         # print(i)
         if i == "https://bhairabgangulycollege.ac.in/" or i == "/":
