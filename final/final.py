@@ -10,7 +10,7 @@ def callurls(urlname):
     urls = []
     for link in soup.find_all('a'):
         urls.append(link.get('href'))
-    print(len(urls))
+    # print(len(urls))
     for i in urls:
         # print(i)
         if i == "https://bhairabgangulycollege.ac.in/" or i == "/":
@@ -20,12 +20,26 @@ def callurls(urlname):
 
     newurls = list(set(urls))
 
+    selectedurl=[]
+
     for i in newurls:
         if (i is not None and i.find("research") != -1):
             if (i.find(urlname) == -1):
-                print(urlname + i)
+                selectedurl.append(urlname+i)
             else:
-                print(i)
+                selectedurl.append(i)
+
+    getcontent(selectedurl)
+
+
+def getcontent(newurls):
+    # print(newurls)
+    for i in newurls:
+        reqs = rq.get(i)
+        soup = bs(reqs.text, 'html.parser')
+        for link in soup.select('#content li'):
+            print(link.text)
+            print("\n")
 
 
 try:
