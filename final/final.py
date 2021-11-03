@@ -2,6 +2,16 @@ import requests as rq
 from bs4 import BeautifulSoup as bs
 
 
+def scrap_url(research_urls):
+    for link in research_urls:
+        reqs = rq.get(link)
+        soup = bs(reqs.text, 'html.parser')
+        names = soup.select('#content li strong')
+        if names != None:
+            for name in names:
+                print(name.text)
+
+
 def callurls(urlname):
     orUrl = 'https://bhairabgangulycollege.ac.in/'
     # print("urlname:" + urlname)
@@ -19,27 +29,16 @@ def callurls(urlname):
             callurls(orUrl + i)
 
     newurls = list(set(urls))
-
-    selectedurl=[]
-
+    research_urls = []
     for i in newurls:
-        if (i is not None and i.find("research") != -1):
-            if (i.find(urlname) == -1):
-                selectedurl.append(urlname+i)
+        if i is not None and i.find("research") != -1:
+            if i.find(urlname) == -1:
+
+                research_urls.append(urlname + i)
             else:
-                selectedurl.append(i)
+                research_urls.append(i)
 
-    getcontent(selectedurl)
-
-
-def getcontent(newurls):
-    # print(newurls)
-    for i in newurls:
-        reqs = rq.get(i)
-        soup = bs(reqs.text, 'html.parser')
-        for link in soup.select('#content li'):
-            print(link.text)
-            print("\n")
+    scrap_url(research_urls)
 
 
 try:
@@ -48,4 +47,3 @@ try:
 
 except Exception as e:
     print(e)
-
