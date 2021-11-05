@@ -1,9 +1,40 @@
 import requests as rq
 from bs4 import BeautifulSoup as bs
+import db
+import sqlite3
+
+con = sqlite3.connect('./rdp')
+cur = con.cursor()
+
+
+# print(cur)
+
+def insertdata(name, department, description):
+    cur.execute(
+        'INSERT INTO rdp VALUES(NULL,"{name}","{department}","{description}",NULL,NULL)'.format(
+            name=name,
+            department=department,
+            description=description))
+    print(
+        'INSERT INTO rdp VALUES(NULL,"{name}","{department}","{description}",NULL,NULL)'.format(
+            name=name,
+            department=department,
+            description=description))
+    con.commit()
+
+
+def showdata():
+    cur.execute("SELECT * FROM rdp")
+    data = cur.fetchall()
+    for i in data:
+        print(i)
+
+
+# insertdata("Hello", "dolly", "lara")
 
 
 def scrap_url(research_urls):
-    #scrapping each url
+    # scrapping each url
     for link in research_urls:
         print(link)
         reqs = rq.get(link)
@@ -16,18 +47,28 @@ def scrap_url(research_urls):
         divison = []
         # getting the name,department and description of researcher and storing inside an array
         for i in text:
-            tmp = i.replace('“', '"')
-            qindex = tmp.find('"')
+            tmp1 = i.replace('“', '')
+            tmp = tmp1.replace('”', '')
             department = tmp.find('Department')
-            hash = {"name": tmp[:department].strip(), "department": tmp[department:qindex].strip(),
-                    "description": tmp[qindex:].strip()}
+            qindex = tmp.find('.', department + 1)
+            name = tmp[:department].strip()
+            newdepaartment = tmp[department:qindex].strip()
+            description = tmp[qindex + 1:].strip().replace('\n', '. ')
+
+            hash = {"name": name, "department": newdepaartment,
+                    "description": description}
 
             divison.append(hash)
 
-        for i in range(len(divison)):
-            if divison[i]['department'] != "":
-                print(i, " ", divison[i])
-                print()
+    for i in range(len(divison)):
+        if divison[i]['department'] != "":
+            zinsertdata(divison[i]['name'], divison[i]['department'], divison[i]['description'])
+            # print(divison[i]['name'], divison[i]['department'], divison[i]['description'])
+            # print(divison[i])
+            # print("name: " + divison[i]['name'])
+            # print("department: " + divison[i]['department'])
+            # print("description: " + divison[i]['description'])
+            # print("\n")
 
 
 def callurls(urlname):
@@ -62,6 +103,6 @@ def callurls(urlname):
 try:
     url = "https://bhairabgangulycollege.ac.in/"
     callurls(url)
-
+    # db.showdata()
 except Exception as e:
     print(e)
