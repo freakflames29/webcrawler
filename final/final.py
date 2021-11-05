@@ -3,13 +3,31 @@ from bs4 import BeautifulSoup as bs
 
 
 def scrap_url(research_urls):
+    #scrapping each url
     for link in research_urls:
+        print(link)
         reqs = rq.get(link)
         soup = bs(reqs.text, 'html.parser')
-        names = soup.select('#content li strong')
-        if names != None:
-            for name in names:
-                print(name.text)
+        names = soup.select('#content li ')
+        text = []
+        # if names != None:
+        for z in names:
+            text.append(z.text)
+        divison = []
+        # getting the name,department and description of researcher and storing inside an array
+        for i in text:
+            tmp = i.replace('“', '"')
+            qindex = tmp.find('"')
+            department = tmp.find('Department')
+            hash = {"name": tmp[:department].strip(), "department": tmp[department:qindex].strip(),
+                    "description": tmp[qindex:].strip()}
+
+            divison.append(hash)
+
+        for i in range(len(divison)):
+            if divison[i]['department'] != "":
+                print(i, " ", divison[i])
+                print()
 
 
 def callurls(urlname):
