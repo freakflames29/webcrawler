@@ -1,3 +1,5 @@
+import time
+
 import requests as rq
 from bs4 import BeautifulSoup as bs
 import db
@@ -6,20 +8,21 @@ import sqlite3
 con = sqlite3.connect('./new_db')
 cur = con.cursor()
 
-
-# print(cur)
-
+user_url=input("Please Enter the site url here:- ")
+print(f"Visiting {user_url}...".format(user_url=user_url))
+print()
+time.sleep(1)
 def insertdata(name, department, description):
     cur.execute(
         'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
             name=name,
             department=department,
             description=description))
-    print(
-        'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
-            name=name,
-            department=department,
-            description=description))
+    # print(
+    #     'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
+    #         name=name,
+    #         department=department,
+    #         description=description))
     con.commit()
 
 
@@ -33,7 +36,7 @@ def showdata():
 def scrap_url(research_urls):
     # scrapping each url
     for link in research_urls:
-        print(link)
+        # print(link)
         reqs = rq.get(link)
         soup = bs(reqs.text, 'html.parser')
         names = soup.select('#content li ')
@@ -69,7 +72,7 @@ def scrap_url(research_urls):
 
 
 def callurls(urlname):
-    orUrl = 'https://bhairabgangulycollege.ac.in/'
+    orUrl = user_url
     # print("urlname:" + urlname)
     reqs = rq.get(urlname)
     soup = bs(reqs.text, 'html.parser')
@@ -79,7 +82,7 @@ def callurls(urlname):
     # print(len(urls))
     for i in urls:
         # print(i)
-        if i == "https://bhairabgangulycollege.ac.in/" or i == "/":
+        if i == "{ul}/".format(ul=user_url) or i == "/":
             continue
         elif (urls.count(i) == 0):
             callurls(orUrl + i)
@@ -98,7 +101,7 @@ def callurls(urlname):
 
 
 try:
-    url = "https://bhairabgangulycollege.ac.in/"
+    url = user_url
     callurls(url)
     # showdata()
 except Exception as e:

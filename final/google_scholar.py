@@ -1,3 +1,4 @@
+import time
 import requests as rq
 from bs4 import BeautifulSoup as bs
 import db
@@ -12,10 +13,12 @@ stripnames = []
 google_scholar = []
 ourl = "https://scholar.google.com"
 
-
+print("Finding Researcher and their profiles...")
+print()
+time.sleep(1)
 # function for getting google_scholar column data from database
 def get_gs_data():
-    cur.execute("SELECT google_scholar FROM users")
+    cur.execute("SELECT google_scholar FROM users;")
     data = cur.fetchall()
     for i in data:
         if i[0] != None:
@@ -24,25 +27,21 @@ def get_gs_data():
 
 # function for inserting the data into the database
 
-def insertdata(name, department, description):
-    cur.execute(
-        'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
-            name=name,
-            department=department,
-            description=description))
-    print(
-        'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
-            name=name,
-            department=department,
-            description=description))
-    con.commit()
+# def insertdata(name, department, description):
+#     cur.execute(
+#         'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
+#             name=name,
+#             department=department,
+#             description=description))
+#     con.commit()
 
 # function to update google_scholar url
 def update(url, id):
     sql = 'UPDATE users SET google_scholar="{url}" WHERE id={id};'.format(url=url, id=id)
     print(sql)
 
-    a = cur.execute(sql)
+    cur.execute(sql)
+    con.commit()
 
 
 # function for getting the data from the database
@@ -74,6 +73,8 @@ for i in names:
     else:
         newnames.append(gh)
 print("-------------------------------------------------------------------------")
+print("Finding additonal Info...")
+print()
 # for loop for newnames
 for nn in newnames:
     if nn['name'].find(":") == -1 and nn['name'] != "":
@@ -91,7 +92,7 @@ def findscholar(r, m, id):
         cont = i.get('content')
 
         if cont.find("Bhairab Ganguly College"):
-            print("*" * 15)
+            # print("*" * 15)
             google_scholar_url = ourl + m.get('href')
             hash = {"name": m.text, "url": google_scholar_url, "id": id}
             google_scholar.append(hash)
@@ -104,13 +105,13 @@ def findscholar(r, m, id):
 
 
 def request(url, id):
-    print(url)
+    # print(url)
     response = rq.get(url)
     soup = bs(response.text, 'html.parser')
     # print(soup)
     des = soup.select('.gs_rt2 a')
     # des = soup.select('a')
-    print(des)
+    # print(des)
     for m in des:
         # print(m.get('href'))
         r = rq.get(ourl + m.get('href'))
@@ -129,5 +130,8 @@ names_google_scholar_()
 # for loop for google_scholar
 # for i in google_scholar:
 #     print(i)
-get_gs_data()
+# print("Showing the users")
+# print()
+# time.sleep(1)
+# get_gs_data()
 # update(ourl,20)
