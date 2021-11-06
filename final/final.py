@@ -30,9 +30,6 @@ def showdata():
         print(i)
 
 
-# insertdata("Hello", "dolly", "lara")
-
-
 def scrap_url(research_urls):
     # scrapping each url
     for link in research_urls:
@@ -62,7 +59,7 @@ def scrap_url(research_urls):
 
     for i in range(len(divison)):
         if divison[i]['department'] != "":
-            zinsertdata(divison[i]['name'], divison[i]['department'], divison[i]['description'])
+            insertdata(divison[i]['name'], divison[i]['department'], divison[i]['description'])
             # print(divison[i]['name'], divison[i]['department'], divison[i]['description'])
             # print(divison[i])
             # print("name: " + divison[i]['name'])
