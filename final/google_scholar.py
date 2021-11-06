@@ -38,7 +38,7 @@ def get_gs_data():
 # function to update google_scholar url
 def update(url, id):
     sql = 'UPDATE users SET google_scholar="{url}" WHERE id={id};'.format(url=url, id=id)
-    print(sql)
+    # print(sql)
 
     cur.execute(sql)
     con.commit()
@@ -56,7 +56,7 @@ def getdata():
 getdata()
 for i in names:
     name = i['name']
-    print(name)
+    # print(name)
     dot = name.find(".")
     comma = name.find(",")
     pi = name.find("PI")
@@ -72,7 +72,7 @@ for i in names:
         newnames.append(h)
     else:
         newnames.append(gh)
-print("-------------------------------------------------------------------------")
+# print("-------------------------------------------------------------------------")
 print("Finding additonal Info...")
 print()
 # for loop for newnames
