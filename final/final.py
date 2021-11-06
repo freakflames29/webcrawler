@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as bs
 import db
 import sqlite3
 
-con = sqlite3.connect('./rdp')
+con = sqlite3.connect('./new_db')
 cur = con.cursor()
 
 
@@ -11,12 +11,12 @@ cur = con.cursor()
 
 def insertdata(name, department, description):
     cur.execute(
-        'INSERT INTO rdp VALUES(NULL,"{name}","{department}","{description}",NULL,NULL)'.format(
+        'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
             name=name,
             department=department,
             description=description))
     print(
-        'INSERT INTO rdp VALUES(NULL,"{name}","{department}","{description}",NULL,NULL)'.format(
+        'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
             name=name,
             department=department,
             description=description))
@@ -24,7 +24,7 @@ def insertdata(name, department, description):
 
 
 def showdata():
-    cur.execute("SELECT * FROM rdp")
+    cur.execute("SELECT * FROM users")
     data = cur.fetchall()
     for i in data:
         print(i)
@@ -100,6 +100,6 @@ def callurls(urlname):
 try:
     url = "https://bhairabgangulycollege.ac.in/"
     callurls(url)
-    # db.showdata()
+    # showdata()
 except Exception as e:
     print(e)
