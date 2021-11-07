@@ -16,6 +16,8 @@ ourl = "https://scholar.google.com"
 print("Finding Researcher and their profiles...")
 print()
 time.sleep(1)
+
+
 # function for getting google_scholar column data from database
 def get_gs_data():
     cur.execute("SELECT google_scholar FROM users;")
@@ -24,16 +26,6 @@ def get_gs_data():
         if i[0] != None:
             print(i[0])
 
-
-# function for inserting the data into the database
-
-# def insertdata(name, department, description):
-#     cur.execute(
-#         'INSERT INTO users VALUES(NULL,"{name}","{department}","{description}",NULL,NULL,NULL)'.format(
-#             name=name,
-#             department=department,
-#             description=description))
-#     con.commit()
 
 # function to update google_scholar url
 def update(url, id):
@@ -98,25 +90,18 @@ def findscholar(r, m, id):
             google_scholar.append(hash)
             update(google_scholar_url, id)
             break
-            # sql = 'UPDATE users SET google_scholar="{url}" WHERE id={id}'.format(url=google_scholar_url, id=id)
-            # print(sql)
-            # if cur.execute(sql):
-            #     print("updated")
 
 
 def request(url, id):
     # print(url)
     response = rq.get(url)
     soup = bs(response.text, 'html.parser')
-    # print(soup)
     des = soup.select('.gs_rt2 a')
-    # des = soup.select('a')
-    # print(des)
+
     for m in des:
         # print(m.get('href'))
         r = rq.get(ourl + m.get('href'))
         if r.status_code == 200:
-            # pass
             findscholar(r, m, id)
 
 
