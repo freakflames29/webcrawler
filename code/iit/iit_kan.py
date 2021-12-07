@@ -66,7 +66,6 @@ def insert_description(data):
 
 # function to scrap the urls for researcher profiles
 def scrap(urllist):
-    # for link in urllist:
     res = rq.get(urllist)
     soup = bs(res.text, 'html.parser')
     names = soup.select('.jwts_content td p a')
@@ -75,32 +74,32 @@ def scrap(urllist):
     print(len(profiles))
 
     print(len(names))
-    z = 1
-    x = 1
-    descriptions = []
-    for name in names:
-        if len(name.text) > 0:
-            print(z, name.text)
-            insert_names(name.text)
-        z += 1
-    fetch_ids()
-    for i in profiles:
-        res_loc = i.text.strip().find("Research Topic")
+    if (len(profiles)) and (len(names)) > 0:
+        print("Fetching researchers info...")
+        z = 1
+        x = 1
+        for name in names:
+            if len(name.text) > 0:
+                print(z, name.text)
+                insert_names(name.text)
+            z += 1
+        fetch_ids()
+        for i in profiles:
+            res_loc = i.text.strip().find("Research Topic")
 
-        research_topic = i.text[res_loc:400]
+            research_topic = i.text[res_loc:400]
 
-        cleaned_research_topic = research_topic.replace('"', "'")
-        if (len(cleaned_research_topic)) != 1:
-            print(x, cleaned_research_topic)
-            # descriptions.append(cleaned_research_topic)
-            insert_description(cleaned_research_topic)
-        x += 1
+            cleaned_research_topic = research_topic.replace('"', "'")
+            if (len(cleaned_research_topic)) != 1:
+                print(x, cleaned_research_topic)
+                insert_description(cleaned_research_topic)
+            x += 1
 
 
 # function for getting all research areas links
 def callurls(urlname):
+    print("Finding urls...")
     orUrl = user_url
-    # print("urlname:" + urlname)
     reqs = rq.get(urlname)
     soup = bs(reqs.text, 'html.parser')
     urls = []
@@ -126,9 +125,10 @@ def callurls(urlname):
 
     for i in research_urls:
         print(i)
+        scrap(i)
 
 
 try:
-    scrap("https://www.iitk.ac.in/new/iitk-research-scholars")
+    callurls(user_url)
 except Exception as e:
     print("ERROR", e)
