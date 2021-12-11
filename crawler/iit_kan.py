@@ -2,22 +2,21 @@ import time
 
 import requests as rq
 from bs4 import BeautifulSoup as bs
-import mysql.connector
+from DB_CON import mydb
 
-#the main url
+# the main url
 user_url = "https://www.iitk.ac.in"
-
 
 
 # database connection
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="webcrawler"
-)
-
+# mydb = mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     password="",
+#     database="webcrawler"
+# )
+#
 
 # inserting names into database
 def insert_names(data):
@@ -26,12 +25,14 @@ def insert_names(data):
     mycursor.execute(sql)
     mydb.commit()
 
+
 # to store description accotding to name
 ids = []
-last_id = 0 #db first id
-fid = 0 # db last id
+last_id = 0  # db first id
+fid = 0  # db last id
 
-#fetching all ddatabase ids
+
+# fetching all ddatabase ids
 def fetch_ids():
     mycursor = mydb.cursor()
     mycursor.execute("SELECT id FROM iit_kan")
@@ -39,17 +40,17 @@ def fetch_ids():
     mydb.commit()
     for i in datas:
         ids.append(i[0])
-    global  last_id
-    last_id = ids[len(ids) - 1] # setting last id
-    global  fid
-    fid = ids[0] #setting first id
+    global last_id
+    last_id = ids[len(ids) - 1]  # setting last id
+    global fid
+    fid = ids[0]  # setting first id
     # print(ids)
     # print("First data:", fid, "Second Data:", last_id)
 
 
 # inserting description into database
 def insert_description(data):
-    global  fid, last_id
+    global fid, last_id
     # print("FID",fid)
     # print("THE LAST ID",last_id)
     if fid <= last_id:
@@ -60,8 +61,6 @@ def insert_description(data):
         # print(sql)
         fid += 1
         # print(id)
-
-
 
 
 # function to scrap the urls for researcher profiles
