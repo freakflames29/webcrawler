@@ -1,7 +1,7 @@
 import sys
 import time
 #importing mydb from the DB folder
-sys.path.insert(0, '/home/sourav/Documents/webcrawler/code/DB')
+#sys.path.insert(0, '/home/sourav/Documents/webcrawler/code/DB')
 from DB_CON import mydb
 import requests as rq
 from bs4 import BeautifulSoup as bs
