@@ -5,58 +5,63 @@ from bs4 import BeautifulSoup as bs
 # from DB_CON import mydb
 class IIT_BOMB:
     def __init__(self):
-        self.ourl = "https://www.iitb.ac.in"
-        self.starturl = "https://www.iitb.ac.in/en/education/academic-divisions"
-        self.dept_urls = []
+        self.dept_url = ["https://www.che.iitb.ac.in", "https://www.bio.iitb.ac.in"]
+        self.start_url = ["https://www.che.iitb.ac.in/research-areas",
+                          "https://www.bio.iitb.ac.in/research/research-groups"]
 
-    def scrap_departments_url(self):
-        page = rq.get(self.starturl)
-        soup = bs(page.content, 'html.parser')
-        dept_links = soup.select("#node-407 > div.content > div > div > div > div:nth-child(2) a")
-        for i in dept_links:
-            self.dept_urls.append(i.get('href'))
 
-    def callurls(self, urlname, nochange):
-        print("THE URL:", urlname)
-        print("Finding urls...")
-        orUrl = nochange
-        sec_orUrl = nochange.replace("http", "https")
-        reqs = rq.get(urlname)
-        soup = bs(reqs.text, 'html.parser')
-        urls = []
-        for link in soup.find_all('a'):
-            urls.append(link.get('href'))
+    def find_profile(self, link, count):
+        req = rq.get(link)
+        soup = bs(req.content, 'html.parser')
+        names = soup.select(".view-content .views-field-title span a")
+        if names is not None:
+            for name in names:
+                prof_name = name.text
+                desc_link = self.dept_url[count] + name.get('href')
+                mycursor = mydb.cursor()
+                sql = "INSERT INTO iit_bomb (id,name,description,google_scholar) VALUES (NULL,'%s','%s',NULL)" % (
+                    prof_name, desc_link)
+                mycursor.execute(sql)
+                mydb.commit()
+                print(prof_name + "Inserted")
 
-        for i in urls:
-            # print(i)
-            if i == "{ul}/".format(ul=nochange) or i == "/":
-                continue
-            elif urls.count(i) == 0 and (i.startswith("http") or i.startswith("https")):
-                self.callurls(i, nochange)
 
-            elif urls.count(i) == 0:
-                self.callurls(orUrl + i, nochange)
+    def new_Scrap(self, link):
+        new_rq = rq.get(link)
+        new_soup = bs(new_rq.content, 'html.parser')
+        names = new_soup.select(
+            "#post-2020 > div > div > div > div > section.elementor-section.elementor-top-section.elementor-element.elementor-element-19b0cd25.elementor-section-boxed.elementor-section-height-default.elementor-section-height-default > div.elementor-container.elementor-column-gap-default > div > div .elementor-toggle-item p")
+        if names is not None:
+            for i in names:
+                text = i.text
+                pi_loc = text.find('PI:')
+                name = text[pi_loc:]
+                desc = text[:pi_loc]
+                mycursor = mydb.cursor()
+                sql = "INSERT INTO iit_bomb (id,name,description,google_scholar) VALUES (NULL,'%s','%s',NULL)" % (
+                    name, desc)
+                mycursor.execute(sql)
+                mydb.commit()
+                print(name + "Inserted")
 
-        newurls = list(set(urls))
-        research_urls = []
-        for i in newurls:
-            if i is not None and i.find("research") != -1:
-                if i.find(urlname) == -1:
 
-                    research_urls.append(urlname + i)
-                else:
-                    research_urls.append(i)
-
-        for i in research_urls:
-            print(i)
-
-    def run(self):
-        for i in self.dept_urls:
-            url = i[:-1]
-            self.callurls(url, url)
+    def scrap(self):
+        for url in range(len(self.start_url)):
+            page = rq.get(self.start_url[url])
+            soup = bs(page.content, 'html.parser')
+            links = soup.find_all('a')
+            res_links = []
+            for link in links:
+                if link.get('href') is not None:
+                    if link.get('href').startswith('/research-area'):
+                        res_url = self.dept_url[url] + link.get('href')
+                        if res_url not in res_links:
+                            res_links.append(res_url)
+            for res_link in res_links:
+                print(res_link)
+                self.find_profile(res_link, url)
+            self.new_Scrap(self.start_url[1])
 
 
 ob = IIT_BOMB()
-ob.scrap_departments_url()
-# ob.callurls("https://www.bio.iitb.ac.in")
-ob.run()
+ob.scrap()
