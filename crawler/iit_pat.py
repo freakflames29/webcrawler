@@ -34,14 +34,14 @@ class IIT_PAT:
         # print(soup.find_all('a'))
         a = soup.select(".inner-right-pannel .item-page .responsive-table table tbody tr td")
         print("[+] Data found!")
-        table = {}
+        # table = {}
         # print(a[0].text)
         for i in range(0, len(a), 3):
             self.dept = a[i].text
             self.desc = a[i + 1].text
             self.name = a[i + 2].text
             # adding data into the database
-            # db_insert(self.name, self.dept, self.desc)
+            db_insert(self.name, self.dept, self.desc)
 
             self.prof_names.append(self.name)
             if self.name and self.dept and self.desc is not None:
