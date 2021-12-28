@@ -1,3 +1,4 @@
+#nit nagpur
 import requests as rq
 from bs4 import BeautifulSoup as bs
 from DB_CON import mydb
