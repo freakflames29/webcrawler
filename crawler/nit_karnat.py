@@ -10,14 +10,23 @@ class NitKarnatk:
         self.starurl = "https://www.nitk.ac.in/research-areas"
         self.deptlinks = []
 
+    def db_save(self, name, profile_link):
+        mycur = mydb.cursor()
+        sql = "INSERT INTO nit_karnatak VALUES(NULL,'%s','%s',NULL);" % (name, profile_link)
+        mycur.execute(sql)
+        mydb.commit()
+        print(name," saved")
+
+
     def find_profiles(self, link):
-        thelink=link.replace("/faculty", "")
+        thelink = link.replace("/faculty", "")
         print(link)
         page = rq.get(link)
         soup = bs(page.content, 'html.parser')
         profiles = soup.select(".item-list .views-row span a")
         for profile in profiles:
-            print(profile.text," ",thelink+profile.get('href'))
+            # print(profile.text, " ", thelink + profile.get('href'))
+            self.db_save(profile.text, thelink + profile.get('href'))
 
     def find_dept_links(self):
         page = rq.get(self.starurl)
