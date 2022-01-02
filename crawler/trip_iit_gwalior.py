@@ -2,7 +2,7 @@
 import requests as rq
 from bs4 import BeautifulSoup as bs
 from DB_CON import mydb
-
+import freshtomatoes
 
 class IITGwa:
     def __init__(self):

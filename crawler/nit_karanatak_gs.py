@@ -28,12 +28,12 @@ class NitKarnatakGS:
                         'content').casefold() or "karanatak National Institute of Technology, karanatak".casefold() in meta.get(
                     'content').casefold() or "NITK karanatak".casefold() in meta.get(
                         'content').casefold() or "nitk.edu.in".casefold() in meta.get('content').casefold():
-                    # mycur = mydb.cursor()
-                    # sql = "update nit_nagpur set google_scholar='%s' where id='%s'" % (newurl, id)
-                    # mycur.execute(sql)
-                    # mydb.commit()
-                    # print("updated", name.text)
-                    print(name.text, newurl)
+                    mycur = mydb.cursor()
+                    sql = "update nit_karnatak set google_scholar='%s' where id='%s'" % (newurl, id)
+                    mycur.execute(sql)
+                    mydb.commit()
+                    print("updated", name.text)
+                    # print(name.text, newurl)
                     break
     def start(self):
         for row in self.myresult:
