@@ -33,7 +33,7 @@ class NitKurk:
                     sql = "update nit_kuruk set google_scholar='%s' where id='%s'" % (newurl, id)
                     mycur.execute(sql)
                     mydb.commit()
-                    print("updated", name.text)
+                    # print("updated", name.text)
                     # print(name.text, newurl)
                     break
 
@@ -48,5 +48,3 @@ class NitKurk:
                 self.google_scholar(new_name, row[0])
 
 
-ob = NitKurk()
-ob.start()

@@ -26,9 +26,12 @@ import nit_jaipur_gs
 # nit jalandhar
 import nit_jalandhar
 
-#nir karnataka
-import  nit_karnat
+# nit karnataka
+import nit_karnat
 import nit_karanatak_gs
+# nit kurukshetra
+import nit_kurks
+import nit_kuruks_gs
 
 
 def hyd_profile():
@@ -68,18 +71,35 @@ def hyd_profile():
                 f.close()
 
 
-def fun_nit_karnatak(name,url):
+def fun_nit_kuruk(name, url):
+    print()
+    ob = nit_kurks.NitKuruk()
+    ob.scrap()
+    print("Finding other profiles of researchers (this may take a while)")
+    gs = nit_kuruks_gs.NitKurk()
+    gs.start()
+
+    inst_name = name.upper()
+    print("[+] Generating profiles for " + inst_name)
+    generate_profile('nit_kuruk')
+    print()
+    print("[+] Done! all profiles are saved in the directory 'profiles'")
+
+
+
+def fun_nit_karnatak(name, url):
     print()
     ob = nit_karnat.NitKarnatk()
     ob.find_dept_links()
     print("Finding other profiles of researchers (this may take a while)\n")
 
-    gs=nit_karanatak_gs.NitKarnatakGS()
+    gs = nit_karanatak_gs.NitKarnatakGS()
     gs.start()
+    inst_name = name.upper()
+    print("[+] Generating profiles for " + inst_name)
     generate_profile('nit_karnatak')
     print()
     print("[+] Done! all profiles are saved in the directory 'profiles'")
-
 
 
 def fun_nit_jaipur(name, url):
@@ -278,9 +298,14 @@ def main():
         print("[+] " + name)
         fun_nit_jalandhar(name, url[:-1])
     elif len(name) > 0 and (
-            name.casefold() == "nit karnataka".casefold() or name.casefold() == "National Institute of Technology Karnataka".casefold()or name.casefold() == "NITK".casefold()):
+            name.casefold() == "nit karnataka".casefold() or name.casefold() == "National Institute of Technology Karnataka".casefold() or name.casefold() == "NITK".casefold()):
         print("[+] " + name)
         fun_nit_karnatak(name, url[:-1])
+
+    elif len(name) > 0 and (
+            name.casefold() == "nit kurukshetra".casefold() or name.casefold() == "National Institute of Technology Kurukshetra".casefold()):
+        print("[+] " + name)
+        fun_nit_kuruk(name, url[:-1])
 
 
     else:

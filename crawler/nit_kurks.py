@@ -16,9 +16,10 @@ class NitKuruk:
         sql = "INSERT INTO nit_kuruk VALUES (NULL,'%s',NULL)" % (name)
         mycursor.execute(sql)
         mydb.commit()
-        print(mycursor.rowcount, "record inserted.")
+        # print(mycursor.rowcount, "record inserted.")
 
     def scrap(self):
+        print("Finding profiles...")
         req = rq.get(self.url)
         soup = bs(req.text, "html.parser")
 
@@ -37,7 +38,5 @@ class NitKuruk:
             print("ERROR")
 
 
-ob = NitKuruk()
-ob.scrap()
 
 # ALTER TABLE table AUTO_INCREMENT = 1;
