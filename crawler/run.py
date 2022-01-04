@@ -1,4 +1,7 @@
 from gen_profile import generate_profile
+import requests as rq
+from bs4 import BeautifulSoup as bs
+
 from DB_CON import mydb
 # iit bombay import
 
@@ -32,6 +35,12 @@ import nit_karanatak_gs
 # nit kurukshetra
 import nit_kurks
 import nit_kuruks_gs
+# nit nagpur
+import nit_nagpur
+import nit_nagpur_gs
+# IIIT gwalior
+import trip_iit_gwalior
+import trip_gwalior_gs
 
 
 def hyd_profile():
@@ -85,6 +94,34 @@ def fun_nit_kuruk(name, url):
     print()
     print("[+] Done! all profiles are saved in the directory 'profiles'")
 
+
+def fun_nit_nagpur(name, url):
+    print()
+    ob = nit_nagpur.NitNag()
+    ob.scrap()
+    print("Finding other profiles of researchers (this may take a while)")
+    gs = nit_nagpur_gs.NitNagGs()
+    gs.start()
+    inst_name = name.upper()
+    print("[+] Generating profiles for " + inst_name)
+    generate_profile('nit_nagpur')
+    print()
+    print("[+] Done! all profiles are saved in the directory 'profiles'")
+
+
+def fun_trip_gwalior(name, url):
+    print()
+    ob = trip_iit_gwalior.IITGwa()
+    ob.scrapdata()
+    ob.start()
+    print("Finding other profiles of researchers (this may take a while)\n")
+    gs = trip_gwalior_gs.TripGwaGs()
+    gs.start()
+    inst_name = name.upper()
+    print("[+] Generating profiles for " + inst_name)
+    generate_profile('trip_gwalior')
+    print()
+    print("[+] Done! all profiles are saved in the directory 'profiles'")
 
 
 def fun_nit_karnatak(name, url):
@@ -258,6 +295,50 @@ def fun_nit_bhopal(name, url):
     print("[+] Done! all profiles are saved in the directory 'profiles'")
 
 
+def find_res_links(name, urlname):
+    filename = "../profiles/" + name + "_profiles.txt"
+    user_url = urlname
+    print("[+] Finding potential urls for researchers info...\n")
+    orUrl = user_url
+    reqs = rq.get(urlname)
+    soup = bs(reqs.text, 'html.parser')
+    urls = []
+    for link in soup.find_all('a'):
+        urls.append(link.get('href'))
+    # print(len(urls))
+    for i in urls:
+        # print(i)
+        if i == "{ul}/".format(ul=user_url) or i == "/":
+            continue
+        elif urls.count(i) == 0:
+            find_res_links(orUrl + i)
+
+    newurls = list(set(urls))
+    research_urls = []
+    for i in newurls:
+        if i is not None and i.find("research") != -1:
+            # print(i)
+            if i.find(urlname) == -1:
+
+                if i.startswith(''):
+                    research_urls.append(orUrl+"/"+i)
+            else:
+                research_urls.append(i)
+    if len(research_urls) > 0:
+        for i in research_urls:
+            print(i)
+            print("--------------------------------" * 4)
+            with open(filename, "a") as f:
+                f.write("Links: " + i + '\n')
+                f.write("--------------------------------" * 4 + '\n')
+                f.write('\n')
+                f.close()
+        print()
+        print("[+] "+str(len(research_urls))+" potential links found and saved to the directory named 'profiles'")
+    else:
+        print("[+] No potential links found")
+
+
 def main():
     name = input("Enter the name of the institute: ")
     url = input("Enter the url of the institute: ")
@@ -307,9 +388,19 @@ def main():
         print("[+] " + name)
         fun_nit_kuruk(name, url[:-1])
 
+    elif len(name) > 0 and (
+            name.casefold() == "nit nagpur".casefold() or name.casefold() == "Visvesvaraya National Institute of Technology Nagpur".casefold() or name.casefold() == "vnit nagpur".casefold()):
+        print("[+] " + name)
+        fun_nit_nagpur(name, url[:-1])
+    elif len(name) > 0 and (
+            name.casefold() == "iiit gwalior".casefold() or name.casefold() == "Atal Bihari Vajpayee Indian Institute of Information Technology and Management Gwalior".casefold() or name.casefold() == "Indian Institute of Information Technology and Management Gwalior".casefold()):
+        print("[+] " + name)
+        fun_trip_gwalior(name, url[:-1])
+
 
     else:
-        print("OOps! Check the name please")
+        find_res_links(name,url[:-1])
 
 
 main()
+# find_res_links(url[:-1])

@@ -33,7 +33,6 @@ class NitNagGs:
                     sql = "update nit_nagpur set google_scholar='%s' where id='%s'" % (newurl, id)
                     mycur.execute(sql)
                     mydb.commit()
-                    print("updated", name.text)
                     # print(name.text, newurl)
                     break
     def start(self):
@@ -43,5 +42,3 @@ class NitNagGs:
                 self.google_scholar(new_name, i[0])
 
 
-ob=NitNagGs()
-ob.start()

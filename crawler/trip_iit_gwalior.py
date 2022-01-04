@@ -14,7 +14,6 @@ class IITGwa:
         sql = "insert into trip_gwalior values(NULL,'%s',NULL)" % (name)
         mycursor.execute(sql)
         mydb.commit()
-        print(name + "Data inserted")
 
     def scrapdata(self):
         page = rq.get(self.url)
@@ -31,5 +30,5 @@ class IITGwa:
             self.db_save(j[0].text)
 
 
-ob = IITGwa()
-ob.start()  # start method
+# ob=IITGwa()
+# ob.scrapdata()

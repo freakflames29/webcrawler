@@ -14,7 +14,7 @@ class TripGwaGs:
         self.myresult = mycursor.fetchall()
 
     def google_scholar(self, name, id):
-        print(name)
+        # print(name)
         space = name.replace(" ", "%20")
         url = "https://scholar.google.com/scholar?q=%s" % space
         page = rq.get(url)
@@ -33,7 +33,7 @@ class TripGwaGs:
                     sql = "update trip_gwalior set google_scholar='%s' where id='%s'" % (newurl, id)
                     mycur.execute(sql)
                     mydb.commit()
-                    print("updated", name.text)
+                    # print("updated", name.text)
                     # print(name.text, newurl)
                     break
 
@@ -42,5 +42,5 @@ class TripGwaGs:
             self.google_scholar(row[1], row[0])
 
 
-ob = TripGwaGs()
-ob.start()
+# ob = TripGwaGs()
+# ob.start()

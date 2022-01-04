@@ -13,9 +13,9 @@ class NitNag:
         sql = "INSERT INTO nit_nagpur  VALUES (NULL,'%s',NULL)" % (name)
         mycursor.execute(sql)
         mydb.commit()
-        print(mycursor.rowcount, "record inserted")
 
     def scrap(self):
+        print("Finding profiles...")
         req = rq.get(self.url)
         soup = bs(req.content, 'html.parser')
         names = soup.select('.fruitful_tab tbody td')
@@ -24,5 +24,3 @@ class NitNag:
                 self.dbsave(name.text.strip())
 
 
-ob = NitNag()
-ob.scrap()

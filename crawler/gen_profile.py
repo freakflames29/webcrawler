@@ -8,6 +8,7 @@ def generate_profile(name_of_the_table):
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     # print()
+    # print(len(myresult[0]))
     if len(myresult[0]) == 4:
         for x in myresult:
             if x[3] == None:
@@ -52,3 +53,5 @@ def generate_profile(name_of_the_table):
                     f.write("--------------------------------" * 4 + '\n')
                     f.write('\n')
                     f.close()
+
+# generate_profile('trip_gwalior')
