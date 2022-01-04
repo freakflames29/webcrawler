@@ -15,12 +15,12 @@ class NitKarnatk:
         sql = "INSERT INTO nit_karnatak VALUES(NULL,'%s','%s',NULL);" % (name, profile_link)
         mycur.execute(sql)
         mydb.commit()
-        print(name," saved")
+        # print(name," saved")
 
 
     def find_profiles(self, link):
         thelink = link.replace("/faculty", "")
-        print(link)
+        # print(link)
         page = rq.get(link)
         soup = bs(page.content, 'html.parser')
         profiles = soup.select(".item-list .views-row span a")
@@ -36,10 +36,5 @@ class NitKarnatk:
             self.deptlinks.append(link.get('href'))
         for link in self.deptlinks:
             self.find_profiles(link.replace("research-consultancy", "faculty"))
-            # self.find_profiles(link+"faculty")
-            # pass
 
 
-ob = NitKarnatk()
-ob.find_dept_links()
-# ob.find_profiles("https://physics.nitk.ac.in/research-consultancy")

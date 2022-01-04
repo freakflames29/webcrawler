@@ -26,6 +26,10 @@ import nit_jaipur_gs
 # nit jalandhar
 import nit_jalandhar
 
+#nir karnataka
+import  nit_karnat
+import nit_karanatak_gs
+
 
 def hyd_profile():
     file_name = "../profiles/" + "iit_hyd" + "_profiles.txt"
@@ -62,6 +66,20 @@ def hyd_profile():
                 f.write("--------------------------------" * 4 + '\n')
                 f.write('\n')
                 f.close()
+
+
+def fun_nit_karnatak(name,url):
+    print()
+    ob = nit_karnat.NitKarnatk()
+    ob.find_dept_links()
+    print("Finding other profiles of researchers (this may take a while)\n")
+
+    gs=nit_karanatak_gs.NitKarnatakGS()
+    gs.start()
+    generate_profile('nit_karnatak')
+    print()
+    print("[+] Done! all profiles are saved in the directory 'profiles'")
+
 
 
 def fun_nit_jaipur(name, url):
@@ -259,6 +277,10 @@ def main():
             name.casefold() == "nit jalandhar".casefold() or name.casefold() == "Dr. B. R. Ambedkar National Institute of Technology Jalandhar".casefold()):
         print("[+] " + name)
         fun_nit_jalandhar(name, url[:-1])
+    elif len(name) > 0 and (
+            name.casefold() == "nit karnataka".casefold() or name.casefold() == "National Institute of Technology Karnataka".casefold()or name.casefold() == "NITK".casefold()):
+        print("[+] " + name)
+        fun_nit_karnatak(name, url[:-1])
 
 
     else:
