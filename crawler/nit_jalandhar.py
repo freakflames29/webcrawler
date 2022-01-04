@@ -11,9 +11,10 @@ class NitJala:
         sql="insert into nit_jal  values(NULL,'%s');"%(info)
         mycur.execute(sql)
         mydb.commit()
-        print("saved")
+        # print("saved")
 
     def scrap(self):
+        print("Finding profiles...")
         req=rq.get(self.url)
         soup=bs(req.content,"html.parser")
         names=soup.select(".row ol li")
@@ -21,5 +22,3 @@ class NitJala:
             name=name.text.strip()
             self.db_save(name)
 
-ob=NitJala()
-ob.scrap()

@@ -12,7 +12,7 @@ import iit_del_gs
 import iit_hyd
 import iit_hyd_gs
 
-#iit kanpur import
+# iit kanpur import
 import iit_kan
 import iit_kan_gs
 
@@ -23,6 +23,8 @@ import nit_bhop
 import nit_jaipur
 import nit_jaipur_gs
 
+# nit jalandhar
+import nit_jalandhar
 
 
 def hyd_profile():
@@ -62,13 +64,13 @@ def hyd_profile():
                 f.close()
 
 
-def fun_nit_jaipur(name,url):
+def fun_nit_jaipur(name, url):
     print()
     ob = nit_jaipur.NitJaipur()
     ob.scrap()
     print("Finding other profiles of researchers (this may take a while)")
 
-    gs=nit_jaipur_gs.Nit_jaipur_gs()
+    gs = nit_jaipur_gs.Nit_jaipur_gs()
     gs.start()
 
     mycursor = mydb.cursor()
@@ -76,7 +78,7 @@ def fun_nit_jaipur(name,url):
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     for row in myresult:
-        if row[2]==None:
+        if row[2] == None:
             print("Name: ", row[1])
             print("--------------------------------" * 4)
             with open("../profiles/nit_jaipur_profiles.txt", "a") as f:
@@ -98,6 +100,31 @@ def fun_nit_jaipur(name,url):
     print()
     print("[+] Done! all profiles are saved in the directory 'profiles'")
 
+
+def fun_nit_jalandhar(name, url):
+    print()
+    ob = nit_jalandhar.NitJala()
+    ob.scrap()
+    print("Finding other profiles of researchers (this may take a while)\n")
+    inst_name = name.upper()
+    print("[+] Generating profiles for " + inst_name)
+    print()
+    file_name = "../profiles/" + "nit_jalandhar" + "_profiles.txt"
+
+    mycursor = mydb.cursor()
+    sql = "SELECT * FROM nit_jal"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    for row in myresult:
+        print("Profiles: ", row[1])
+        print("--------------------------------" * 4 + '\n')
+        with open(file_name, "a") as f:
+            f.write("Profiles: " + row[1] + '\n')
+            f.write("--------------------------------" * 4 + '\n')
+            f.write('\n')
+            f.close()
+    print()
+    print("[+] Done! all profiles are saved in the directory 'profiles'")
 
 
 def fun_iit_bombay(name, url):
@@ -153,7 +180,7 @@ def fun_iit_hyd(name, url):
     print("[+] Done! all profiles are saved in the directory 'profiles'")
 
 
-def fun_iit_kan(name,url):
+def fun_iit_kan(name, url):
     print()
     iit_kan.callurls(url)
     print("Finding other profiles of researchers (this may take a while)")
@@ -167,24 +194,25 @@ def fun_iit_kan(name,url):
     print()
     print("[+] Done! all profiles are saved in the directory 'profiles'")
 
-def fun_nit_bhopal(name,url):
+
+def fun_nit_bhopal(name, url):
     ob = nit_bhop.NitBhp()
     ob.scrap()
     inst_name = name.upper()
     print("\n[+] Generating profiles for " + inst_name)
     print()
     # generate_profile('nit_bhop')
-    mycur=mydb.cursor()
-    sql="SELECT * FROM nit_bhop;"
+    mycur = mydb.cursor()
+    sql = "SELECT * FROM nit_bhop;"
     mycur.execute(sql)
-    myresult=mycur.fetchall()
+    myresult = mycur.fetchall()
     for row in myresult:
-        print("Profile links: ",row[1])
-        print("--------------------------------"*4)
+        print("Profile links: ", row[1])
+        print("--------------------------------" * 4)
         print()
-        with open("../profiles/"+"nit_bhop"+"_profiles.txt","a") as f:
-            f.write("Profile Links: "+row[1]+'\n')
-            f.write("--------------------------------"*4+'\n')
+        with open("../profiles/" + "nit_bhop" + "_profiles.txt", "a") as f:
+            f.write("Profile Links: " + row[1] + '\n')
+            f.write("--------------------------------" * 4 + '\n')
             f.write('\n')
             f.close()
 
@@ -196,7 +224,8 @@ def main():
     name = input("Enter the name of the institute: ")
     url = input("Enter the url of the institute: ")
 
-    if len(name) > 0 and (name.casefold() == "iit bombay".casefold() or name.casefold() == "Indian Institute of Technology Bombay".casefold()):
+    if len(name) > 0 and (
+            name.casefold() == "iit bombay".casefold() or name.casefold() == "Indian Institute of Technology Bombay".casefold()):
         print("[+] " + name)
         print()
         fun_iit_bombay(name, url[:-1])
@@ -225,6 +254,11 @@ def main():
             name.casefold() == "nit jaipur".casefold() or name.casefold() == "Malaviya National Institute of Technology Jaipur".casefold() or name.casefold() == "MNIT".casefold()):
         print("[+] " + name)
         fun_nit_jaipur(name, url[:-1])
+
+    elif len(name) > 0 and (
+            name.casefold() == "nit jalandhar".casefold() or name.casefold() == "Dr. B. R. Ambedkar National Institute of Technology Jalandhar".casefold()):
+        print("[+] " + name)
+        fun_nit_jalandhar(name, url[:-1])
 
 
     else:
