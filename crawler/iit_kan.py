@@ -8,16 +8,6 @@ from DB_CON import mydb
 user_url = "https://www.iitk.ac.in"
 
 
-# database connection
-
-# mydb = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     password="",
-#     database="webcrawler"
-# )
-#
-
 # inserting names into database
 def insert_names(data):
     mycursor = mydb.cursor()
@@ -70,16 +60,16 @@ def scrap(urllist):
     names = soup.select('.jwts_content td p a')
     profiles = soup.select('.jwts_content table td p')
 
-    print(len(profiles))
+    # print(len(profiles))
 
-    print(len(names))
+    # print(len(names))
     if (len(profiles)) and (len(names)) > 0:
         print("Fetching researchers info...")
         z = 1
         x = 1
         for name in names:
             if len(name.text) > 0:
-                print(z, name.text)
+                # print(z, name.text)
                 insert_names(name.text)
             z += 1
         fetch_ids()
@@ -90,14 +80,14 @@ def scrap(urllist):
 
             cleaned_research_topic = research_topic.replace('"', "'")
             if (len(cleaned_research_topic)) != 1:
-                print(x, cleaned_research_topic)
+                # print(x, cleaned_research_topic)
                 insert_description(cleaned_research_topic)
             x += 1
 
 
 # function for getting all research areas links
 def callurls(urlname):
-    print("Finding urls...")
+    print("Finding useful urls...")
     orUrl = user_url
     reqs = rq.get(urlname)
     soup = bs(reqs.text, 'html.parser')
@@ -123,11 +113,11 @@ def callurls(urlname):
                 research_urls.append(i)
 
     for i in research_urls:
-        print(i)
+        # print(i)
         scrap(i)
 
-
-try:
-    callurls(user_url)
-except Exception as e:
-    print("ERROR", e)
+#
+# try:
+#     callurls(user_url)
+# except Exception as e:
+#     print("ERROR", e)

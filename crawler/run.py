@@ -12,6 +12,9 @@ import iit_del_gs
 import iit_hyd
 import iit_hyd_gs
 
+#iit kanpur import
+import iit_kan
+import iit_kan_gs
 
 def hyd_profile():
     file_name = "../profiles/" + "iit_hyd" + "_profiles.txt"
@@ -103,24 +106,44 @@ def fun_iit_hyd(name, url):
     print("[+] Done! all profiles are saved in the directory 'profiles'")
 
 
+def fun_iit_kan(name,url):
+    print()
+    iit_kan.callurls(url)
+    print("Finding other profiles of researchers (this may take a while)")
+
+    iit_kan_gs.gs_start()
+
+    inst_name = name.upper()
+    print("[+] Generating profiles for " + inst_name)
+    print()
+    generate_profile('iit_kan')
+    print()
+    print("[+] Done! all profiles are saved in the directory 'profiles'")
+
 
 def main():
     name = input("Enter the name of the institute: ")
     url = input("Enter the url of the institute: ")
-    if len(name) > 0 and (
-            name.casefold() == "iit bombay".casefold() or name.casefold() == "Indian Institute of Technology Bombay".casefold()):
+
+    if len(name) > 0 and (name.casefold() == "iit bombay".casefold() or name.casefold() == "Indian Institute of Technology Bombay".casefold()):
         print("[+] " + name)
         print()
-        fun_iit_bombay(name, url)
+        fun_iit_bombay(name, url[:-1])
 
     elif len(name) > 0 and (
             name.casefold() == "iit delhi".casefold() or name.casefold() == "Indian Institute of Technology delhi".casefold()):
         print("[+] " + name)
-        fun_iit_delhi(name, url)
+        fun_iit_delhi(name, url[:-1])
+
     elif len(name) > 0 and (
             name.casefold() == "iit hyderabad".casefold() or name.casefold() == "Indian Institute of Technology hyderabad".casefold()):
         print("[+] " + name)
-        fun_iit_hyd(name, url)
+        fun_iit_hyd(name, url[:-1])
+
+    elif len(name) > 0 and (
+            name.casefold() == "iit kanpur".casefold() or name.casefold() == "Indian Institute of Technology kanpur".casefold()):
+        print("[+] " + name)
+        fun_iit_kan(name, url[:-1])
 
 
     else:

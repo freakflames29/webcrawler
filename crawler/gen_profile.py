@@ -4,7 +4,7 @@ from DB_CON import mydb
 def generate_profile(name_of_the_table):
     mycursor = mydb.cursor()
     sql = "SELECT * FROM " + name_of_the_table + ";"
-    file_name="../profiles/"+name_of_the_table+"_profiles.txt"
+    file_name = "../profiles/" + name_of_the_table + "_profiles.txt"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     for x in myresult:
@@ -30,5 +30,3 @@ def generate_profile(name_of_the_table):
                 f.write("--------------------------------" * 4 + '\n')
                 f.write('\n')
                 f.close()
-
-
