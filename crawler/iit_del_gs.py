@@ -12,11 +12,9 @@ class IIT_DEL_GS:
         sql = "select id,name from iit_delhi;"
         mycursor.execute(sql)
         self.names = mycursor.fetchall()
-        # # print(self.names)
-        # for i in self.names:
-        #     print(i[0],i[1])
 
     def scrap(self, name, id):
+        print("Finding other profiles...")
         space = name.replace(" ", "%20")
         url = "https://scholar.google.com/scholar?q=%s" % space
         page = rq.get(url)
@@ -35,8 +33,6 @@ class IIT_DEL_GS:
                     sql = "update iit_delhi set google_scholar='%s' where id='%s'" % (newurl, id)
                     mycur.execute(sql)
                     mydb.commit()
-                    # print("updated",name.text)
-                    # print(newurl)
                     break
 
     def run(self):
@@ -46,6 +42,5 @@ class IIT_DEL_GS:
             time.sleep(1)
 
 
-gs = IIT_DEL_GS()
-# gs.scrap("D. Sundar")
-gs.run()
+# gs = IIT_DEL_GS()
+# gs.run()

@@ -15,12 +15,11 @@ class Delhi:
     def db_insert(self, name, desc): # inserting into database
         mycursor = mydb.cursor()
         sql = "INSERT INTO iit_delhi (id,name,description,google_scholar) VALUES (NULL,'%s','%s',NULL);" % (name, desc)
-        print(sql)
         mycursor.execute(sql)
         mydb.commit()
-        print(mycursor.rowcount, "record inserted.")
 
     def scrap_info(self): # scraping the data from the website
+
         r = rq.get(self.scrap_url, verify=False)
         soup = bs(r.content, "html.parser")
         data = soup.select('.content .clearfix table td') # selecting the data from the website
@@ -43,7 +42,6 @@ class Delhi:
             else:
                 self.removed_names.append(self.names[prof]) # appending the names to the list
 
-        print(len(self.removed_names))
 
         # making the names to dictionary and appending to new list
 
@@ -52,9 +50,9 @@ class Delhi:
             self.profinfo.append(self.names_dic)
 
         for prof in self.profinfo:
-            # self.db_insert(prof['name'], prof['desc'])
-            print(prof['name'])
+            self.db_insert(prof['name'], prof['desc'])
+            # print(prof['name'])
 
-
-obj = Delhi()
-obj.scrap_info()
+#
+# obj = Delhi()
+# obj.scrap_info()
