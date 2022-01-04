@@ -29,7 +29,7 @@ class IIT_HYD:
             name, desc, project)
         mycursor.execute(sql)
         mydb.commit()
-        print(mycursor.rowcount, "record inserted.")
+        # print(mycursor.rowcount, "record inserted.")
 
     def scrap(self):
         print("Finding researchers...")
@@ -57,5 +57,4 @@ class IIT_HYD:
         self.scrap()  # Scrap the data
 
 
-ob = IIT_HYD()
-ob.run()
+

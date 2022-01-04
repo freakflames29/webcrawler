@@ -33,7 +33,7 @@ class IIT_HYD_GS:
                     sql = "update iit_hyd set google_scholar='%s' where id='%s'" % (newurl, id)
                     mycur.execute(sql)
                     mydb.commit()
-                    print("updated",name.text)
+                    # print("updated",name.text)
                     # print(name.text, newurl)
                     break
     def run(self):
@@ -41,5 +41,3 @@ class IIT_HYD_GS:
             self.gs_scrap(i[1],i[0])
             time.sleep(1)
 
-ob = IIT_HYD_GS()
-ob.run()
