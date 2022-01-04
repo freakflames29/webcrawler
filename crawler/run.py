@@ -19,6 +19,12 @@ import iit_kan_gs
 # nit bhopal
 import nit_bhop
 
+# nit jaipur
+import nit_jaipur
+import nit_jaipur_gs
+
+
+
 def hyd_profile():
     file_name = "../profiles/" + "iit_hyd" + "_profiles.txt"
     mycur = mydb.cursor()
@@ -54,6 +60,44 @@ def hyd_profile():
                 f.write("--------------------------------" * 4 + '\n')
                 f.write('\n')
                 f.close()
+
+
+def fun_nit_jaipur(name,url):
+    print()
+    ob = nit_jaipur.NitJaipur()
+    ob.scrap()
+    print("Finding other profiles of researchers (this may take a while)")
+
+    gs=nit_jaipur_gs.Nit_jaipur_gs()
+    gs.start()
+
+    mycursor = mydb.cursor()
+    sql = "SELECT * FROM nit_jaipur"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    for row in myresult:
+        if row[2]==None:
+            print("Name: ", row[1])
+            print("--------------------------------" * 4)
+            with open("../profiles/nit_jaipur_profiles.txt", "a") as f:
+                f.write("Name: " + row[1] + '\n')
+                f.write("--------------------------------" * 4 + '\n')
+                f.write('\n')
+                f.close()
+        else:
+            print("Name: ", row[1])
+            print("Google Scholar: ", row[2])
+            print("--------------------------------" * 4)
+            with open("../profiles/nit_jaipur_profiles.txt", "a") as f:
+                f.write("Name: " + row[1] + '\n')
+                f.write("Google Scholar: " + row[2] + '\n')
+                f.write("--------------------------------" * 4 + '\n')
+                f.write('\n')
+                f.close()
+
+    print()
+    print("[+] Done! all profiles are saved in the directory 'profiles'")
+
 
 
 def fun_iit_bombay(name, url):
@@ -176,6 +220,11 @@ def main():
             name.casefold() == "nit bhopal".casefold() or name.casefold() == "Maulana Azad National Institute of Technology Bhopal".casefold()):
         print("[+] " + name)
         fun_nit_bhopal(name, url[:-1])
+
+    elif len(name) > 0 and (
+            name.casefold() == "nit jaipur".casefold() or name.casefold() == "Malaviya National Institute of Technology Jaipur".casefold() or name.casefold() == "MNIT".casefold()):
+        print("[+] " + name)
+        fun_nit_jaipur(name, url[:-1])
 
 
     else:

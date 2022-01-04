@@ -53,5 +53,3 @@ class Nit_jaipur_gs:
                 # print(name)
                 self.google_sch(new_name,name[0])
 
-ob=Nit_jaipur_gs()
-ob.start()

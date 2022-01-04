@@ -13,9 +13,10 @@ class NitJaipur:
         sql = "insert into nit_jaipur  values(NULL,'%s',NULL);" % (info)
         mycur.execute(sql)
         mydb.commit()
-        print("saved")
+        # print("saved")
 
     def scrap(self):
+        print("Finding profiles...")
         req = rq.get(self.url)
         soup = bs(req.text, "html.parser")
         names = soup.select('.TabbedPanelsContent td b')
@@ -23,5 +24,3 @@ class NitJaipur:
             self.db_save(name.text.strip())
 
 
-ob = NitJaipur()
-ob.scrap()
