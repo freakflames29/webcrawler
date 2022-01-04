@@ -9,13 +9,15 @@ class NitBhp:
         self.url = 'http://www.manit.ac.in/content/area-research'
 
     def db_save(self, link):
+        print("Saving profiles")
         mycur = mydb.cursor()
         sql = "INSERT INTO nit_bhop  VALUES (NULL,'%s');" % (link)
         mycur.execute(sql)
         mydb.commit()
         mycur.close()
-        print('nit bhopal links saved')
+        # print('nit bhopal links saved')
     def scrap(self):
+        print("Finding profiles...\n")
         data = rq.get(self.url)
         soup = bs(data.content, 'html.parser')
         links = soup.select('.even .quick a')
@@ -23,5 +25,3 @@ class NitBhp:
             # print(link.text)
             self.db_save(link.get('href'))
 
-ob = NitBhp()
-ob.scrap()

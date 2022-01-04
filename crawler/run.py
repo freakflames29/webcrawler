@@ -16,6 +16,9 @@ import iit_hyd_gs
 import iit_kan
 import iit_kan_gs
 
+# nit bhopal
+import nit_bhop
+
 def hyd_profile():
     file_name = "../profiles/" + "iit_hyd" + "_profiles.txt"
     mycur = mydb.cursor()
@@ -120,6 +123,30 @@ def fun_iit_kan(name,url):
     print()
     print("[+] Done! all profiles are saved in the directory 'profiles'")
 
+def fun_nit_bhopal(name,url):
+    ob = nit_bhop.NitBhp()
+    ob.scrap()
+    inst_name = name.upper()
+    print("\n[+] Generating profiles for " + inst_name)
+    print()
+    # generate_profile('nit_bhop')
+    mycur=mydb.cursor()
+    sql="SELECT * FROM nit_bhop;"
+    mycur.execute(sql)
+    myresult=mycur.fetchall()
+    for row in myresult:
+        print("Profile links: ",row[1])
+        print("--------------------------------"*4)
+        print()
+        with open("../profiles/"+"nit_bhop"+"_profiles.txt","a") as f:
+            f.write("Profile Links: "+row[1]+'\n')
+            f.write("--------------------------------"*4+'\n')
+            f.write('\n')
+            f.close()
+
+    print()
+    print("[+] Done! all profiles are saved in the directory 'profiles'")
+
 
 def main():
     name = input("Enter the name of the institute: ")
@@ -144,6 +171,11 @@ def main():
             name.casefold() == "iit kanpur".casefold() or name.casefold() == "Indian Institute of Technology kanpur".casefold()):
         print("[+] " + name)
         fun_iit_kan(name, url[:-1])
+
+    elif len(name) > 0 and (
+            name.casefold() == "nit bhopal".casefold() or name.casefold() == "Maulana Azad National Institute of Technology Bhopal".casefold()):
+        print("[+] " + name)
+        fun_nit_bhopal(name, url[:-1])
 
 
     else:
