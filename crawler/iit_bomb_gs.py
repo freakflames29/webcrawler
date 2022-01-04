@@ -36,7 +36,7 @@ class IIT_BOMB_GS:
                     sql = "update iit_bomb set google_scholar='%s' where id='%s'" % (newurl, id)
                     mycur.execute(sql)
                     mydb.commit()
-                    print("updated", name.text)
+                    # print("updated", name.text)
                     # print(name.text, newurl)
                     break
 
@@ -47,6 +47,5 @@ class IIT_BOMB_GS:
             clean_name = name.replace("PI: Prof.", "")
             self.google_scholar(clean_name, id)
 
-
-ob = IIT_BOMB_GS()
-ob.run()
+# ob = IIT_BOMB_GS()
+# ob.run()

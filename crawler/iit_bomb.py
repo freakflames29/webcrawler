@@ -1,5 +1,6 @@
 import requests as rq
 from bs4 import BeautifulSoup as bs
+from DB_CON import mydb
 
 
 # from DB_CON import mydb
@@ -8,7 +9,6 @@ class IIT_BOMB:
         self.dept_url = ["https://www.che.iitb.ac.in", "https://www.bio.iitb.ac.in"]
         self.start_url = ["https://www.che.iitb.ac.in/research-areas",
                           "https://www.bio.iitb.ac.in/research/research-groups"]
-
 
     def find_profile(self, link, count):
         req = rq.get(link)
@@ -23,10 +23,9 @@ class IIT_BOMB:
                     prof_name, desc_link)
                 mycursor.execute(sql)
                 mydb.commit()
-                print(prof_name + "Inserted")
-
 
     def new_Scrap(self, link):
+        print("Finding researchers...")
         new_rq = rq.get(link)
         new_soup = bs(new_rq.content, 'html.parser')
         names = new_soup.select(
@@ -42,10 +41,10 @@ class IIT_BOMB:
                     name, desc)
                 mycursor.execute(sql)
                 mydb.commit()
-                print(name + "Inserted")
-
+                # print(name + "Inserted")
 
     def scrap(self):
+        print("Finding useful links...")
         for url in range(len(self.start_url)):
             page = rq.get(self.start_url[url])
             soup = bs(page.content, 'html.parser')
@@ -58,10 +57,10 @@ class IIT_BOMB:
                         if res_url not in res_links:
                             res_links.append(res_url)
             for res_link in res_links:
-                print(res_link)
+                # print(res_link)
                 self.find_profile(res_link, url)
             self.new_Scrap(self.start_url[1])
 
 
-ob = IIT_BOMB()
-ob.scrap()
+# ob = IIT_BOMB()
+# ob.scrap()
